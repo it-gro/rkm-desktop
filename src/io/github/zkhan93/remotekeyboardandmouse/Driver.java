@@ -48,10 +48,35 @@ public class Driver {
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						s.cs.getInputStream()));
 				char ch;
+				String str;
 				while (!isInterrupted() && Server.connected) {
-					ch = br.readLine().toCharArray()[0];
-					System.out.println(ch);
-					c.typeKey(ch);
+					str = br.readLine();
+					if (str.startsWith("0")) {
+						// keyboard event
+						ch = str.toCharArray()[1];
+						System.out.println(ch);
+						c.typeKey(ch);
+					} else if (str.startsWith("1")) {
+						// mouse event
+						str = str.substring(2, str.length());
+						if(str.startsWith("0")){
+							// mouse move event
+							str=str.substring(2, str.length());
+							System.out.println("mouse move : " + str);
+							c.mouseMove(Integer.parseInt(str));
+						}
+						else{
+							// mouse click event
+							str=str.substring(2, str.length());
+							System.out.println("mouse click : " + str);
+							c.mouseClick(Integer.parseInt(str));
+						}
+						
+					} else {
+						str = str.substring(1, str.length());
+						System.out.println("special: " + str);
+					}
+
 				}
 			} catch (IOException e) {
 				s.disconnectClient();

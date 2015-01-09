@@ -1,14 +1,17 @@
 package io.github.zkhan93.remotekeyboardandmouse;
 
 import java.awt.AWTException;
+import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class Controller {
 	private Robot robo;
 
 	public Controller() {
 		try {
+
 			robo = new Robot();
 		} catch (AWTException e) {
 			e.printStackTrace();
@@ -21,6 +24,78 @@ public class Controller {
 
 	public void releaseKey(int keycode) {
 		robo.keyRelease(keycode);
+	}
+
+	public void mouseClick(int click) {
+		/**
+		 * 1 left 2 right 3 middle
+		 */
+		switch (click) {
+		case 1:
+			robo.mousePress(MouseEvent.BUTTON1_MASK);
+			robo.mouseRelease(MouseEvent.BUTTON1_MASK);
+			break;
+		case 2:
+			robo.mousePress(MouseEvent.BUTTON2_MASK);
+			robo.mouseRelease(MouseEvent.BUTTON2_MASK);
+			break;
+		case 3:
+			robo.mousePress(MouseEvent.BUTTON3_MASK);
+			robo.mouseRelease(MouseEvent.BUTTON3_MASK);
+			break;
+		case 4: // scroll up
+			robo.mouseWheel(-2);
+			break;
+		case 5:
+			// scroll down
+			robo.mouseWheel(2);
+			break;
+		}
+	}
+
+	public void mouseMove(int action) {
+		int x, y;
+		switch (action) {
+		case 1: // moving up by 10 pixels
+			x = 0;
+			y = -10;
+			break;
+		case 2:
+			x = 10;
+			y = -10;
+			break;
+		case 3:
+			x = 10;
+			y = 0;
+			break;
+		case 4:
+			x = 10;
+			y = 10;
+			break;
+		case 5:
+			x = 0;
+			y = 10;
+			break;
+		case 6:
+			x = -10;
+			y = 10;
+			break;
+		case 7:
+			x = -10;
+			y = 0;
+			break;
+		case 8:
+			x = -10;
+			y = -10;
+			break;
+		default:
+			x = 0;
+			y = 0;
+			break;
+		}
+		robo.mouseMove(MouseInfo.getPointerInfo().getLocation().x + x,
+				MouseInfo.getPointerInfo().getLocation().y + y);
+
 	}
 
 	public void typeKey(char ch) {
@@ -60,7 +135,8 @@ public class Controller {
 				releaseKey(KeyEvent.VK_SHIFT);
 			}
 		} catch (IllegalArgumentException e) {
-			System.out.println("No such Key"); //tell app that there is no such key
+			System.out.println("No such Key"); // tell app that there is no such
+												// key
 			releaseKey(KeyEvent.VK_SHIFT);
 		}
 	}
@@ -69,7 +145,7 @@ public class Controller {
 		try {
 			String shutdownCommand;
 			String operatingSystem = System.getProperty("os.name");
-			
+
 			if ("Linux".equals(operatingSystem)
 					|| "Mac OS X".equals(operatingSystem)) {
 				shutdownCommand = "shutdown -h now";
