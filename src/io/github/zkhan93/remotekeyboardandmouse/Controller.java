@@ -62,7 +62,10 @@ public class Controller {
 			break;
 		}
 	}
-
+	public void mouseMove(int x,int y){
+		robo.mouseMove(MouseInfo.getPointerInfo().getLocation().x + x,
+				MouseInfo.getPointerInfo().getLocation().y + y);
+	}
 	public void mouseMove(int action) {
 		int x, y;
 		switch (action) {

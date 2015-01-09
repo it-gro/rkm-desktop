@@ -12,7 +12,6 @@ public class Server {
 
 	public boolean startServer() {
 		try {
-
 			ss = new ServerSocket(Constants.PORT);
 			connected = false;
 			System.out.println("Server started");

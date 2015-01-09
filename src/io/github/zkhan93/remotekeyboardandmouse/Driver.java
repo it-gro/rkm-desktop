@@ -43,6 +43,7 @@ public class Driver {
 						s.cs.getInputStream()));
 				int ch;
 				String str;
+				String stra[];
 				while (!isInterrupted() && (str = br.readLine()) != null
 						&& Server.connected) {
 
@@ -56,9 +57,9 @@ public class Driver {
 						str = str.substring(2, str.length());
 						if (str.startsWith("0")) {
 							// mouse move event
-							str = str.substring(2, str.length());
-							System.out.println("mouse move : " + str);
-							c.mouseMove(Integer.parseInt(str));
+							stra = str.split(":");
+							//System.out.println("mouse move : " + stra[1]+","+stra[2]);
+							c.mouseMove(Integer.parseInt(stra[1]),Integer.parseInt(stra[2]));
 						} else {
 							// mouse click event
 							str = str.substring(2, str.length());
@@ -72,8 +73,7 @@ public class Driver {
 					}
 				}
 				System.out.println("client disconnected");
-				s.waitForClient();
-
+				s.disconnectClient();
 			} catch (IOException e) {
 				s.disconnectClient();
 				e.printStackTrace();
