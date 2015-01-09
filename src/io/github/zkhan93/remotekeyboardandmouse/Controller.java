@@ -18,12 +18,22 @@ public class Controller {
 		}
 	}
 
-	public void pressKey(int keycode) {
+	public void pressNormalKey(int keycode) {
 		robo.keyPress(keycode);
+		robo.keyRelease(keycode);
 	}
 
-	public void releaseKey(int keycode) {
-		robo.keyRelease(keycode);
+	public void pressShiftKey(int keycode) {
+		try {
+			robo.keyPress(KeyEvent.VK_SHIFT);
+			robo.keyPress(keycode);
+			robo.keyRelease(keycode);
+			robo.keyRelease(KeyEvent.VK_SHIFT);
+		} catch (IllegalArgumentException e) {
+			System.out.println("No such Key"); // tell app that there is no such
+			// key
+			robo.keyRelease(KeyEvent.VK_SHIFT);
+		}
 	}
 
 	public void mouseClick(int click) {
@@ -98,47 +108,91 @@ public class Controller {
 
 	}
 
-	public void typeKey(char ch) {
-		try {
-			int keycode = KeyEvent.getExtendedKeyCodeForChar(ch);
-			if (ch >= 'A' && ch <= 'Z') {
-				pressKey(KeyEvent.VK_SHIFT);
-				pressKey(keycode);
-				releaseKey(keycode);
-				releaseKey(KeyEvent.VK_SHIFT);
-			} else if ((ch >= '0' && ch <= '9')
-					|| (ch >= 'a' && ch <= 'z')
-					|| (keycode >= KeyEvent.VK_F1 && keycode <= KeyEvent.VK_F9)
-					|| (ch == '[' || ch == ']' || ch == ';' || ch == '\''
-							|| ch == '`' || ch == '\\' || ch == '-'
-							|| ch == '=' || ch == ',' || ch == '.' || ch == '/')) {
-				pressKey(keycode);
-				releaseKey(keycode);
-			} else {
-				switch (keycode) {
-				case KeyEvent.VK_LEFT_PARENTHESIS:
-					keycode = KeyEvent.VK_9;
-					break;
-				case KeyEvent.VK_RIGHT_PARENTHESIS:
-					keycode = KeyEvent.VK_0;
-					break;
-				case KeyEvent.VK_BRACELEFT:
-					keycode = KeyEvent.VK_OPEN_BRACKET;
-					break;
-				case KeyEvent.VK_BRACERIGHT:
-					keycode = KeyEvent.VK_CLOSE_BRACKET;
-					break;
-				}
-				pressKey(KeyEvent.VK_SHIFT);
-				pressKey(keycode);
-				releaseKey(keycode);
-				releaseKey(KeyEvent.VK_SHIFT);
+	public void typeKey(int ch) {
+		int keycode = ch;// KeyEvent.getExtendedKeyCodeForChar(ch);
+		if (ch >= 'A' && ch <= 'Z') {
+			pressShiftKey(keycode);
+		} else if (ch >= 'a' && ch <= 'z') {
+			ch = KeyEvent.getExtendedKeyCodeForChar((char)ch);
+			pressNormalKey(ch);
+		} else if ((ch >= '0' && ch <= '9')
+		// || (keycode >= KeyEvent.VK_F1 && keycode <=
+		// KeyEvent.VK_F9)
+				|| (ch == '[' || ch == ']' || ch == ';' || ch == '\''
+						|| ch == '`' || ch == '\\' || ch == '-' || ch == '='
+						|| ch == ',' || ch == '.' || ch == '/')) {
+			ch = KeyEvent.getExtendedKeyCodeForChar(ch);
+			pressNormalKey(ch);
+		} else {
+
+			switch (ch) {
+			case '~':
+				ch = KeyEvent.getExtendedKeyCodeForChar('`');
+				break;
+			case '!':
+				ch = KeyEvent.getExtendedKeyCodeForChar('1');
+				break;
+			case '@':
+				ch = KeyEvent.getExtendedKeyCodeForChar('2');
+				break;
+			case '#':
+				ch = KeyEvent.getExtendedKeyCodeForChar('3');
+				break;
+			case '$':
+				ch = KeyEvent.getExtendedKeyCodeForChar('4');
+				break;
+			case '%':
+				ch = KeyEvent.getExtendedKeyCodeForChar('5');
+				break;
+			case '^':
+				ch = KeyEvent.getExtendedKeyCodeForChar('6');
+				break;
+			case '&':
+				ch = KeyEvent.getExtendedKeyCodeForChar('7');
+				break;
+			case '*':
+				ch = KeyEvent.getExtendedKeyCodeForChar('8');
+				break;
+			case '(':
+				ch = KeyEvent.getExtendedKeyCodeForChar('9');
+				break;
+			case ')':
+				ch = KeyEvent.getExtendedKeyCodeForChar('0');
+				break;
+			case '_':
+				ch = KeyEvent.getExtendedKeyCodeForChar('-');
+				break;
+			case '+':
+				ch = KeyEvent.getExtendedKeyCodeForChar('=');
+				break;
+			case '{':
+				ch = KeyEvent.getExtendedKeyCodeForChar('[');
+				break;
+			case '}':
+				ch = KeyEvent.getExtendedKeyCodeForChar(']');
+				break;
+			case '|':
+				ch = KeyEvent.getExtendedKeyCodeForChar('\\');
+				break;
+			case ':':
+				ch = KeyEvent.getExtendedKeyCodeForChar(';');
+				break;
+			case '"':
+				ch = KeyEvent.getExtendedKeyCodeForChar('\'');
+				break;
+			case '<':
+				ch = KeyEvent.getExtendedKeyCodeForChar(',');
+				break;
+			case '>':
+				ch = KeyEvent.getExtendedKeyCodeForChar('.');
+				break;
+			case '?':
+				ch = KeyEvent.getExtendedKeyCodeForChar('/');
+				break;
 			}
-		} catch (IllegalArgumentException e) {
-			System.out.println("No such Key"); // tell app that there is no such
-												// key
-			releaseKey(KeyEvent.VK_SHIFT);
+			pressShiftKey(ch);
 		}
+
 	}
 
 	public static void shutdown() {

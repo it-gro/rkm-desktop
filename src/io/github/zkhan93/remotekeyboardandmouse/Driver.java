@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Driver {
-	Server s;
-	Controller c;
+	Server s = new Server();
+	Controller c = new Controller();
 	GetCommands gc;
 	static Driver d;
 
@@ -25,8 +25,6 @@ public class Driver {
 	}
 
 	public void setNw() {
-		c = new Controller();
-		s = new Server();
 		if (s.startServer()) {
 			s.waitForClient();
 		}
@@ -39,45 +37,43 @@ public class Driver {
 
 	class GetCommands extends Thread {
 		public void run() {
-
-			while (Server.connected == false) {
-				System.out.println("waiting getcommand for client");
-			}
 			System.out.println("connection informed");
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						s.cs.getInputStream()));
-				char ch;
+				int ch;
 				String str;
-				while (!isInterrupted() && Server.connected) {
-					str = br.readLine();
+				while (!isInterrupted() && (str = br.readLine()) != null
+						&& Server.connected) {
+
 					if (str.startsWith("0")) {
 						// keyboard event
-						ch = str.toCharArray()[1];
-						System.out.println(ch);
+						ch = Integer.parseInt(str.substring(2, str.length()));
+						System.out.println((char) ch);
 						c.typeKey(ch);
 					} else if (str.startsWith("1")) {
 						// mouse event
 						str = str.substring(2, str.length());
-						if(str.startsWith("0")){
+						if (str.startsWith("0")) {
 							// mouse move event
-							str=str.substring(2, str.length());
+							str = str.substring(2, str.length());
 							System.out.println("mouse move : " + str);
 							c.mouseMove(Integer.parseInt(str));
-						}
-						else{
+						} else {
 							// mouse click event
-							str=str.substring(2, str.length());
+							str = str.substring(2, str.length());
 							System.out.println("mouse click : " + str);
 							c.mouseClick(Integer.parseInt(str));
 						}
-						
-					} else {
+
+					} else if (str.startsWith("2")) {
 						str = str.substring(1, str.length());
 						System.out.println("special: " + str);
 					}
-
 				}
+				System.out.println("client disconnected");
+				s.waitForClient();
+
 			} catch (IOException e) {
 				s.disconnectClient();
 				e.printStackTrace();
