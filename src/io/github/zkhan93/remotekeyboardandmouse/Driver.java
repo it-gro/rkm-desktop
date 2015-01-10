@@ -53,17 +53,24 @@ public class Driver {
 						System.out.println((char) ch);
 						c.typeKey(ch);
 					} else if (str.startsWith("1")) {
-						// mouse event
+						// 1 mouse event
 						str = str.substring(2, str.length());
 						if (str.startsWith("0")) {
-							// mouse move event
+							// 0 mouse move event
 							stra = str.split(":");
-							//System.out.println("mouse move : " + stra[1]+","+stra[2]);
-							c.mouseMove(Integer.parseInt(stra[1]),Integer.parseInt(stra[2]));
+							// System.out.println("mouse move : " +
+							// stra[1]+","+stra[2]);
+							c.mouseMove(Integer.parseInt(stra[1]),
+									Integer.parseInt(stra[2]));
 						} else {
-							// mouse click event
+							// 1 mouse click event
+							/**
+							 * 1 left 2 middle 3 right
+							 * 4 scroll up
+							 * 5 scroll down
+							 */
 							str = str.substring(2, str.length());
-							System.out.println("mouse click : " + str);
+							// System.out.println("mouse click : " + str);
 							c.mouseClick(Integer.parseInt(str));
 						}
 

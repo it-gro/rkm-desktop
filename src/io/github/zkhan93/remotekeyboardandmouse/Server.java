@@ -20,7 +20,6 @@ public class Server {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 	public void waitForClient() {
