@@ -46,12 +46,23 @@ public class Driver {
 				String stra[];
 				while (!isInterrupted() && (str = br.readLine()) != null
 						&& Server.connected) {
-
+				//	System.out.println(str);
 					if (str.startsWith("0")) {
 						// keyboard event
-						ch = Integer.parseInt(str.substring(2, str.length()));
-						System.out.println((char) ch);
-						c.typeKey(ch);
+						str = str.substring(2, str.length());
+						if (str.startsWith("0")) {
+							ch = Integer
+									.parseInt(str.substring(2, str.length()));
+						//	System.out.println((char) ch);
+							c.typeKey(ch);
+						} else {
+							// if starts with 1 special key
+							ch=Integer.parseInt(str.substring(2,
+									str.length()));
+							c.specialKey(ch);
+						//	System.out.println("received skey "+ch);
+							
+						}
 					} else if (str.startsWith("1")) {
 						// 1 mouse event
 						str = str.substring(2, str.length());
@@ -61,13 +72,13 @@ public class Driver {
 							// System.out.println("mouse move : " +
 							// stra[1]+","+stra[2]);
 							c.mouseMove(Integer.parseInt(stra[1]),
-									Integer.parseInt(stra[2]));
+									Integer.parseInt(stra[2]),
+									Float.parseFloat(stra[3]),
+									Float.parseFloat(stra[4]));
 						} else {
 							// 1 mouse click event
 							/**
-							 * 1 left 2 middle 3 right
-							 * 4 scroll up
-							 * 5 scroll down
+							 * 1 left 2 middle 3 right 4 scroll up 5 scroll down
 							 */
 							str = str.substring(2, str.length());
 							// System.out.println("mouse click : " + str);
@@ -76,7 +87,7 @@ public class Driver {
 
 					} else if (str.startsWith("2")) {
 						str = str.substring(1, str.length());
-						System.out.println("special: " + str);
+					//	System.out.println("special: " + str);
 					}
 				}
 				System.out.println("client disconnected");
