@@ -1,4 +1,4 @@
-package io.github.zkhan93.remotekeyboardandmouse;
+package io.github.zkhan93.lanmaks;
 
 import java.awt.AWTException;
 import java.awt.MouseInfo;
@@ -161,6 +161,7 @@ public class Controller {
 	 * @param vy
 	 */
 	public void mouseMove(int x, int y, float vx, float vy) {
+		try{
 		cx = MouseInfo.getPointerInfo().getLocation().x;
 		cy = MouseInfo.getPointerInfo().getLocation().y;
 		// System.out.println("move by " + vx + "," + vy);
@@ -178,6 +179,9 @@ public class Controller {
 			robo.mouseMove((int) (cx + dx * step), (int) (cy + dy * step));
 
 		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -190,64 +194,7 @@ public class Controller {
 			pressNormalKey(ch);
 		else
 			pressUni(keycode);
-		/*
-		 * 
-		 * if (ch >= 'A' && ch <= 'Z') { pressShiftKey(keycode); } else if (ch
-		 * >= 'a' && ch <= 'z') { ch = KeyEvent.getExtendedKeyCodeForChar((char)
-		 * ch); pressNormalKey(ch); } else if ((ch >= '0' && ch <= '9') // ||
-		 * (keycode >= KeyEvent.VK_F1 && keycode <= // KeyEvent.VK_F9) || (ch ==
-		 * Constants.CH_OBRACKET || ch == Constants.CH_CBRACKET || ch ==
-		 * Constants.CH_SEMICOLON || ch == Constants.CH_SQUOTE || ch ==
-		 * Constants.CH_GRAVE || ch == Constants.CH_FSLASH || ch ==
-		 * Constants.CH_DASH || ch == Constants.CH_EQUAL || ch ==
-		 * Constants.CH_COMMA || ch == Constants.CH_DOT || ch ==
-		 * Constants.CH_BSLASH)) { ch = KeyEvent.getExtendedKeyCodeForChar(ch);
-		 * pressNormalKey(ch); } else {
-		 * 
-		 * switch (ch) { case Constants.CH_TILD: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_GRAVE); break; case
-		 * Constants.CH_EXCLAMATION: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_ONE); break; case
-		 * Constants.CH_AT: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_TWO); break; case
-		 * Constants.CH_HASH: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_THREE); break; case
-		 * Constants.CH_DOLLAR: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_FOUR); break; case
-		 * Constants.CH_PERCENT: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_FIVE); break; case
-		 * Constants.CH_CHARET: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_SIX); break; case
-		 * Constants.CH_AND: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_SEVEN); break; case
-		 * Constants.CH_ASTERICS: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_EIGHT); break; case
-		 * Constants.CH_OPAREN: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_NINE); break; case
-		 * Constants.CH_CPAREN: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_ZERO); break; case
-		 * Constants.CH_UNDERSCORE: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_DASH); break; case
-		 * Constants.CH_PLUS: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_EQUAL); break; case
-		 * Constants.CH_OBRACES: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_OBRACKET); break;
-		 * case Constants.CH_CBRACES: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_CBRACKET); break;
-		 * case Constants.CH_PIPE: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_FSLASH); break; case
-		 * Constants.CH_COLON: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_SEMICOLON); break;
-		 * case Constants.CH_DQUOTES: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_SQUOTE); break; case
-		 * Constants.CH_LESS: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_COMMA); break; case
-		 * Constants.CH_GREATER: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_DOT); break; case
-		 * Constants.CH_QUES: ch =
-		 * KeyEvent.getExtendedKeyCodeForChar(Constants.CH_BSLASH); break; }
-		 * pressShiftKey(ch); }
-		 */
+		
 	}
 
 	public static void shutdown() {

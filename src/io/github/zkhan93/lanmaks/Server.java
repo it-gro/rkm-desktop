@@ -1,4 +1,4 @@
-package io.github.zkhan93.remotekeyboardandmouse;
+package io.github.zkhan93.lanmaks;
 
 import java.io.IOException;
 import java.net.ServerSocket;

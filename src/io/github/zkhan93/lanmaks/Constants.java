@@ -1,4 +1,4 @@
-package io.github.zkhan93.remotekeyboardandmouse;
+package io.github.zkhan93.lanmaks;
 
 public interface Constants {
 	static int PORT = 5556;
