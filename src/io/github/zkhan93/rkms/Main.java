@@ -1,5 +1,6 @@
 package io.github.zkhan93.rkms;
 
+import io.github.zkhan93.rkms.util.Constants;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ui/sample.fxml"));
         primaryStage.setTitle(Constants.APP_NAME);
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();

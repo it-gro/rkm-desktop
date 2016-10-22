@@ -1,4 +1,4 @@
-package io.github.zkhan93.rkms;
+package io.github.zkhan93.rkms.util;
 
 public interface Constants {
     int PORT = 1234;

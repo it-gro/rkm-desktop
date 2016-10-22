@@ -1,4 +1,4 @@
-package io.github.zkhan93.rkms;
+package io.github.zkhan93.rkms.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
