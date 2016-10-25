@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.zkhan93.rkms.controller.MainController">
+<VBox prefWidth="246.0" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.zkhan93.rkms.controller.MainController">
    <children>
       <HBox>
          <children>
-            <Label fx:id="status" text="Status :">
+            <Label text="Status :">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Label>
-            <Label prefHeight="17.0" prefWidth="161.0" text="Server listening" HBox.hgrow="ALWAYS">
+            <Label fx:id="status">
                <padding>
                   <Insets left="5.0" />
                </padding>
@@ -29,6 +29,11 @@
       </HBox>
       <HBox>
          <children>
+            <Label text="Port:">
+               <HBox.margin>
+                  <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
+               </HBox.margin>
+            </Label>
             <TextField fx:id="port" promptText="Port" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="5.0" />

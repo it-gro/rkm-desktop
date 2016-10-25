@@ -1,7 +1,5 @@
 package io.github.zkhan93.rkms;
 
-import io.github.zkhan93.rkms.util.Constants;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,16 +10,11 @@ public class Server {
     static boolean connected;
     private GetCient gc;
 
-    public boolean startServer() {
-        try {
-            ss = new ServerSocket(Constants.PORT);
-            connected = false;
-            System.out.println("Server started");
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public boolean startServer(int port) throws IOException {
+        ss = new ServerSocket(port);
+        connected = false;
+        System.out.println("Server started");
+        return true;
     }
 
     public void waitForClient() {
@@ -36,9 +29,9 @@ public class Server {
                 cs = ss.accept();
                 System.out.println("client connected");
                 connected = true;
-                Driver.d.startListner();
+                Driver.d.startListener();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("socket closed");
             }
         }
     }

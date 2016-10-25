@@ -10,19 +10,23 @@ public class Driver {
     GetCommands gc;
     static Driver d;
 
-    public void go() {
-        setNw();
+    public void go(int port) throws IOException {
+        setNetwork(port);
     }
 
-    public void setNw() {
-        if (s.startServer()) {
+    public void stop() {
+        s.stopServer();
+    }
+
+    public void setNetwork(int port) throws IOException {
+        if (s.startServer(port)) {
             s.waitForClient();
         } else {
             System.out.println("failed to start server");
         }
     }
 
-    public void startListner() {
+    public void startListener() {
         gc = new GetCommands();
         gc.start();
     }
