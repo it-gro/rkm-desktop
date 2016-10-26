@@ -1,10 +1,23 @@
-// Declares binary plugin and its required JavaFX classpath
+group 'io.github.zkhan93'
+version '1.0'
+
+apply plugin: 'java'
 apply from: "http://dl.bintray.com/content/shemnon/javafx-gradle/8.1.1/javafx.plugin"
+
+//sourceCompatibility = 1.7
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//dependencies {
+//    testCompile group: 'junit', name: 'junit', version: '4.11'
+//}
 
 // Configures plugin
 javafx {
     // Points to JDK and its JavaFX libraries, also declares target runtime JDK
-    javaRuntime = '/Library/Java/JavaVirtualMachines/jdk1.7.0_40.jdk'
+    javaRuntime = 'C:/Program Files/Java/jdk1.8.0_92'//'/Library/Java/JavaVirtualMachines/jdk1.7.0_40.jdk'
 
     // Application name and ID presented by target OS
     appID 'RKMServer'
@@ -17,19 +30,22 @@ javafx {
     jvmArgs = ['-XX:+AggressiveOpts', '-XX:CompileThreshold=1']
     systemProperties = ['prism.disableRegionCaching': 'true']
     arguments = ['-l', '--fast']
-
+    // app icons
+    icons {
+        shortcut = ['shortcut-512.png']
+        volume = 'javafx-icon.png'
+        setup = 'setup-512.png'
+    }
     // Keystore credentials for signing JAR
     // Generate key: keytool -genkey -alias release -keyalg RSA -keystore keystore.jks -keysize 2048
     releaseKey {
-        alias = 'release'
+        alias = 'rkmserver'
         keyPass = getProjectProperty('keyStorePassword')
-        keyStore = file("${System.properties['user.home']}/keystore/keystore.jks")
+        keyStore = file("D:/projects/RKAM/server/KeyStore.jks")
         storePass = getProjectProperty('storePassword')
     }
 
     signingMode 'release'
-
-    // ...
 }
 
 String getProjectProperty(String propertyName) {
