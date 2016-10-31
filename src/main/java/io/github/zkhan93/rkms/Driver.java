@@ -4,31 +4,35 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Driver {
-    Server s = new Server();
-    Controller c = new Controller();
-    GetCommands gc;
-    static Driver d;
+public class Driver implements ServerCallbacks {
+    Server server;
+    Controller controller;
+    GetCommands getCommands;
+
+    public Driver() {
+        server = new Server(this);
+        controller = new Controller();
+    }
 
     public void go(int port) throws IOException {
         setNetwork(port);
     }
 
     public void stop() {
-        s.stopServer();
+        server.stopServer();
     }
 
     public void setNetwork(int port) throws IOException {
-        if (s.startServer(port)) {
-            s.waitForClient();
+        if (server.startServer(port)) {
+            server.waitForClient();
         } else {
             System.out.println("failed to start server");
         }
     }
 
     public void startListener() {
-        gc = new GetCommands();
-        gc.start();
+        getCommands = new GetCommands();
+        getCommands.start();
     }
 
     class GetCommands extends Thread {
@@ -36,13 +40,13 @@ public class Driver {
             System.out.println("connection informed");
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(
-                        s.cs.getInputStream()));
+                        server.clientSocket.getInputStream()));
                 int ch;
                 String str;
                 String stra[];
                 while (!isInterrupted() && (str = br.readLine()) != null
                         && Server.connected) {
-                    //	System.out.println(str);
+//                    	System.out.println(str);
                     if (str.startsWith("0")) {
                         // keyboard event
                         str = str.substring(2, str.length());
@@ -50,12 +54,12 @@ public class Driver {
                             ch = Integer
                                     .parseInt(str.substring(2, str.length()));
                             //	System.out.println((char) ch);
-                            c.typeKey(ch);
+                            controller.typeKey(ch);
                         } else {
                             // if starts with 1 special key
                             ch = Integer.parseInt(str.substring(2,
                                     str.length()));
-                            c.specialKey(ch);
+                            controller.specialKey(ch);
                             //	System.out.println("received skey "+ch);
 
                         }
@@ -67,7 +71,7 @@ public class Driver {
                             stra = str.split(":");
                             // System.out.println("mouse move : " +
                             // stra[1]+","+stra[2]);
-                            c.mouseMove(Integer.parseInt(stra[1]),
+                            controller.mouseMove(Integer.parseInt(stra[1]),
                                     Integer.parseInt(stra[2]),
                                     Float.parseFloat(stra[3]),
                                     Float.parseFloat(stra[4]));
@@ -78,7 +82,7 @@ public class Driver {
                              */
                             str = str.substring(2, str.length());
                             // System.out.println("mouse click : " + str);
-                            c.mouseClick(Integer.parseInt(str));
+                            controller.mouseClick(Integer.parseInt(str));
                         }
 
                     } else if (str.startsWith("2")) {
@@ -87,9 +91,9 @@ public class Driver {
                     }
                 }
                 System.out.println("client disconnected");
-                s.disconnectClient();
+                server.disconnectClient();
             } catch (IOException e) {
-                s.disconnectClient();
+                server.disconnectClient();
                 e.printStackTrace();
             }
         }

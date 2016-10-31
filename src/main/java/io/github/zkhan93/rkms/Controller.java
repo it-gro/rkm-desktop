@@ -37,7 +37,7 @@ public class Controller {
 
 		for (int i = 3; i >= 0; --i) {
 			// extracts a single decade of the key-code and adds
-			// an offset to get the required VK_NUMPAD key-code
+			// an offset to getCommands the required VK_NUMPAD key-code
 			int numpad_kc = keycode / (int) (Math.pow(10, i)) % 10
 					+ KeyEvent.VK_NUMPAD0;
 
