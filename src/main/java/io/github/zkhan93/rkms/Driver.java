@@ -1,5 +1,7 @@
 package io.github.zkhan93.rkms;
 
+import io.github.zkhan93.rkms.callbacks.ServerCallbacks;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +25,7 @@ public class Driver implements ServerCallbacks {
     }
 
     public void setNetwork(int port) throws IOException {
-        if (server.startServer(port)) {
+        if (server.initServer(port)) {
             server.waitForClient();
         } else {
             System.out.println("failed to start server");

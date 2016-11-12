@@ -2,6 +2,7 @@ package io.github.zkhan93.rkms.util;
 
 public interface Constants {
     int PORT = 1234;
+    int DISCOVERY_PORT = 6835;
     String APP_NAME = "Remote keyboard and Mouse";
     char CH_GRAVE = '`';
     char CH_DASH = '-';

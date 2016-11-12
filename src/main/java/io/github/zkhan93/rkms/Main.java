@@ -1,6 +1,6 @@
 package io.github.zkhan93.rkms;
 
-import io.github.zkhan93.rkms.controller.MainController;
+import io.github.zkhan93.rkms.controller.MainViewController;
 import io.github.zkhan93.rkms.util.Constants;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,14 +10,14 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private MainController mainController;
+    private MainViewController mainViewController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
         Parent root = fxmlLoader.load();
-        mainController = fxmlLoader.getController();
-        mainController.init();
+        mainViewController = fxmlLoader.getController();
+        mainViewController.init();
         primaryStage.setTitle(Constants.APP_NAME);
         primaryStage.setScene(new Scene(root, 320, 320));
         primaryStage.show();
@@ -25,7 +25,7 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
-        mainController.stop();
+        mainViewController.stop();
         super.stop();
     }
 

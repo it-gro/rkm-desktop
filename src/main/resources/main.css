@@ -1,0 +1,30 @@
+* {
+    -fx-default-background-color: #F44336;
+    -fx-default-button-color: white;
+}
+
+.body {
+    -fx-background-color: -fx-default-background-color;
+}
+
+.button {
+    -fx-background-color: -fx-default-button-color;
+    -fx-text-fill: #F44336;
+    -fx-font-weight: 400;
+}
+
+.label{
+    -fx-text-fill: white;
+    -fx-font-size: 150%;
+    -fx-font-weight: bold;
+}
+.heading{
+    -fx-font-weight: bold;
+    -fx-font-size: 210%;
+}
+.info{
+    -fx-font-size: 120%;
+}
+.note{
+    -fx-font-size: 90%;
+}

@@ -1,10 +1,14 @@
 package io.github.zkhan93.rkms;
 
+import io.github.zkhan93.rkms.callbacks.GetClientTaskCallback;
+import io.github.zkhan93.rkms.callbacks.ServerCallbacks;
+import io.github.zkhan93.rkms.task.GetClientTask;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements GetClientTaskCallback {
     ServerSocket serverSocket;
     Socket clientSocket;
     static boolean connected;
@@ -15,30 +19,24 @@ public class Server {
         this.serverCallbacks = serverCallbacks;
     }
 
-    public boolean startServer(int port) throws IOException {
+    public boolean initServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         connected = false;
-        System.out.println("Server started");
+        System.out.println("Server initialized");
         return true;
     }
 
     public void waitForClient() {
-        getClientTask = new GetClientTask();
+        getClientTask = new GetClientTask(serverSocket, this);
         getClientTask.start();
     }
 
-    class GetClientTask extends Thread {
-        public void run() {
-            try {
-                System.out.println("waiting for client");
-                clientSocket = serverSocket.accept();
-                System.out.println("client connected");
-                connected = true;
-                serverCallbacks.startListener();
-            } catch (IOException e) {
-                System.out.println("socket closed");
-            }
-        }
+    @Override
+    public void clientConnected(Socket socket) {
+        clientSocket = socket;
+        System.out.println("client connected");
+        connected = true;
+        serverCallbacks.startListener();
     }
 
     public void stopServer() {

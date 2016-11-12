@@ -1,8 +1,7 @@
 package io.github.zkhan93.rkms.controller;
 
-import com.sun.deploy.util.Property;
-import com.sun.javafx.iio.ImageStorage;
 import io.github.zkhan93.rkms.Driver;
+import io.github.zkhan93.rkms.task.DiscoveryTask;
 import io.github.zkhan93.rkms.util.Constants;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,64 +13,53 @@ import javafx.scene.image.ImageView;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.Properties;
+import java.util.prefs.Preferences;
 
-public class MainController {
-    @FXML
+
+public class MainViewController {
+    
     Button savePort;
-    @FXML
+    
     Button toggleBtn;
-    @FXML
+    
     TextField port;
-    @FXML
+    
     Label status;
-    @FXML
+    
     ImageView image;
 
     private int activePort;
     private Driver driver;
     private boolean serverStarted;
-    private Properties properties;
-    private FileOutputStream fileOutputStream;
-    private FileInputStream fileInputStream;
+    private Preferences preference;
+
 
     {
         driver = new Driver();
-        try {
-            File file = new File("config.properties");
-            fileOutputStream = new FileOutputStream(file);
-            fileInputStream = new FileInputStream(file);
-            properties = new Properties();
-            properties.load(fileInputStream);
-        } catch (IOException ex) {
-            System.out.println("cannot get properties file: " + ex.getLocalizedMessage());
-        }
-//        activePort = Integer.parseInt(properties.getProperty("port"));
+        preference = Preferences.userNodeForPackage(MainViewController.class);
+        activePort = preference.getInt("port", Constants.PORT);
     }
 
-    @FXML
+    
     public void savePort(ActionEvent event) {
         String portStr = port.getText().trim();
         if (!portStr.isEmpty()) {
             try {
                 activePort = Integer.parseInt(port.getText());
-                properties.put("port", String.valueOf(activePort));
-                properties.store(fileOutputStream, null);
+                preference.putInt("port", activePort);
                 driver.stop();
                 serverStarted = false;
                 toggleState(null);
             } catch (NumberFormatException ex) {
                 activePort = Constants.PORT;
-            } catch (IOException ex) {
-                System.out.println("cannot save properties");
             }
         }
     }
 
-    @FXML
+    
     public void toggleState(ActionEvent event) {
         serverStarted = !serverStarted;
         boolean error = false;
@@ -79,6 +67,9 @@ public class MainController {
             try {
                 driver.go(activePort);
                 serverStarted = true;
+                //start the discovery thread at the start of application
+                Thread thread = new Thread(DiscoveryTask.getInstance());
+                thread.start();
             } catch (IOException ex) {
                 activePort++;
                 serverStarted = false;
@@ -114,6 +105,13 @@ public class MainController {
     }
 
     public void init() {
-        port.setText(properties.getProperty("port"));
+        System.out.println("loaded port from preference");
+        try {
+            activePort = preference.getInt("port", Constants.PORT);
+        } catch (Exception ex) {
+            System.out.println("invalid port in preferences switched to default");
+            activePort = Constants.PORT;
+        }
+        port.setText(String.valueOf(activePort));
     }
 }
