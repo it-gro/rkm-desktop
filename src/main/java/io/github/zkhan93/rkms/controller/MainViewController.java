@@ -1,41 +1,61 @@
 package io.github.zkhan93.rkms.controller;
 
 import io.github.zkhan93.rkms.Driver;
+import io.github.zkhan93.rkms.callbacks.ApplicationCallback;
 import io.github.zkhan93.rkms.task.DiscoveryTask;
 import io.github.zkhan93.rkms.util.Constants;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
 
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 
-public class MainViewController {
-    
-    Button savePort;
-    
-    Button toggleBtn;
-    
-    TextField port;
-    
-    Label status;
-    
-    ImageView image;
+public class MainViewController implements Initializable, EventHandler<ActionEvent> {
+    @FXML
+    Button btnSetting;
+
+    @FXML
+    Button btnReset;
+
+    @FXML
+    Button btnInfo;
+
+    @FXML
+    ImageView imgQrcode;
+
+    @FXML
+    Label txtIp;
+
+    @FXML
+    Label txtPort;
+
+    @FXML
+    Label txtStatus;
 
     private int activePort;
     private Driver driver;
     private boolean serverStarted;
     private Preferences preference;
-
+    private Thread discoveryThread;
+    private ApplicationCallback applicationCallback;
 
     {
         driver = new Driver();
@@ -43,24 +63,47 @@ public class MainViewController {
         activePort = preference.getInt("port", Constants.PORT);
     }
 
-    
-    public void savePort(ActionEvent event) {
-        String portStr = port.getText().trim();
+    /**
+     * set activePort value from preferences and starts the discovery server
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("loaded port from preference");
+        try {
+            activePort = preference.getInt("port", Constants.PORT);
+        } catch (Exception ex) {
+            System.out.println("invalid port in preferences switched to default");
+            activePort = Constants.PORT;
+        }
+        driver.stop();
+        serverStarted = false;
+        toggleState();
+        txtPort.setText("Port " + String.valueOf(activePort));
+
+        btnSetting.setOnAction(this);
+        btnReset.setOnAction(this);
+        btnInfo.setOnAction(this);
+    }
+
+    public void setApplicationCallback(ApplicationCallback applicationCallback) {
+        this.applicationCallback = applicationCallback;
+    }
+
+
+    public void savePort() {
+        String portStr = txtPort.getText().trim();
         if (!portStr.isEmpty()) {
             try {
-                activePort = Integer.parseInt(port.getText());
+                activePort = Integer.parseInt(txtPort.getText());
                 preference.putInt("port", activePort);
-                driver.stop();
-                serverStarted = false;
-                toggleState(null);
             } catch (NumberFormatException ex) {
                 activePort = Constants.PORT;
             }
         }
     }
 
-    
-    public void toggleState(ActionEvent event) {
+
+    public void toggleState() {
         serverStarted = !serverStarted;
         boolean error = false;
         if (serverStarted) {
@@ -68,8 +111,8 @@ public class MainViewController {
                 driver.go(activePort);
                 serverStarted = true;
                 //start the discovery thread at the start of application
-                Thread thread = new Thread(DiscoveryTask.getInstance());
-                thread.start();
+                discoveryThread = new Thread(DiscoveryTask.getInstance());
+                discoveryThread.start();
             } catch (IOException ex) {
                 activePort++;
                 serverStarted = false;
@@ -78,23 +121,21 @@ public class MainViewController {
         } else {
             driver.stop();
         }
-        //update status status
+        //update txtStatus txtStatus
         if (serverStarted) {
-            status.setText("Server started and listening on " + activePort);
-            toggleBtn.setText("Stop");
+            txtStatus.setText("Server ready to connect");
             String ip = null;
             try {
                 ip = Inet4Address.getLocalHost().getHostAddress();
             } catch (UnknownHostException ex) {
                 System.out.println("exception cannot get my IP" + ex.getLocalizedMessage());
             }
-            image.setImage(new Image(QRCode.from(ip + ":" + activePort).withSize(200, 200).to(ImageType.JPG).file().toURI().toString()));
+            imgQrcode.setImage(new Image(QRCode.from(ip + ":" + activePort).withSize(200, 200).to(ImageType.JPG).file().toURI().toString()));
         } else {
             if (error)
-                status.setText("Server not started on port " + activePort + " try different port");
+                txtStatus.setText("Server stopped by error: " + error);
             else
-                status.setText("Server stopped");
-            toggleBtn.setText("Start");
+                txtStatus.setText("Server stopped");
         }
         System.out.println("start/stop server");
     }
@@ -102,16 +143,34 @@ public class MainViewController {
     public void stop() {
         if (driver != null)
             driver.stop();
+        if (discoveryThread != null)
+            discoveryThread.interrupt();
     }
 
-    public void init() {
-        System.out.println("loaded port from preference");
-        try {
-            activePort = preference.getInt("port", Constants.PORT);
-        } catch (Exception ex) {
-            System.out.println("invalid port in preferences switched to default");
-            activePort = Constants.PORT;
+
+    @Override
+    public void handle(ActionEvent event) {
+
+        if (event.getSource() == btnSetting) {
+            //switch to setting scene
+            try {
+                applicationCallback.showSettingScene();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (event.getSource() == btnInfo) {
+            //switch to info scene
+            try {
+                applicationCallback.showInfoScene();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (event.getSource() == btnReset) {
+            driver.stop();
+            serverStarted = false;
+            toggleState();
+        } else {
+            //not implemented
         }
-        port.setText(String.valueOf(activePort));
     }
 }

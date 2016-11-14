@@ -10,21 +10,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox minHeight="350.0" minWidth="615.0" prefHeight="350.0" prefWidth="615.0" styleClass="body" stylesheets="@main.css"
-      xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.github.zkhan93.rkms.controller.MainViewController">
+<HBox minHeight="350.0" minWidth="615.0" prefHeight="350.0" prefWidth="615.0" styleClass="body" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.zkhan93.rkms.controller.MainViewController">
     <children>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
         <VBox fillWidth="false" prefWidth="300.0" spacing="5.0" HBox.hgrow="ALWAYS">
             <children>
                 <HBox spacing="5.0" styleClass="body">
                     <children>
-                        <Button fx:id="btnSetting" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
-                                text="Setting">
+                        <Button fx:id="btnSetting" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#showSettingScene" text="Setting">
                             <graphic>
                                 <ImageView>
                                     <image>
-                                        <Image url="@ic_settings_white_18dp_1x.png"/>
+                                        <Image url="@ic_settings_white_18dp_1x.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -33,7 +30,7 @@
                             <graphic>
                                 <ImageView>
                                     <image>
-                                        <Image url="@ic_autorenew_white_18dp_1x.png"/>
+                                        <Image url="@ic_autorenew_white_18dp_1x.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -42,7 +39,7 @@
                             <graphic>
                                 <ImageView>
                                     <image>
-                                        <Image url="@ic_info_white_18dp_1x.png"/>
+                                        <Image url="@ic_info_white_18dp_1x.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -53,64 +50,57 @@
                     <children>
                         <ImageView fitHeight="112.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@launcher_trans.png"/>
+                                <Image url="@launcher_trans.png" />
                             </image>
                         </ImageView>
-                        <Label contentDisplay="TOP" graphicTextGap="0.0" styleClass="label-heading"
-                               text="Remote Keyboard &amp; Mouse" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS"
-                               wrapText="true"/>
-                        <Separator prefWidth="200.0"/>
-                        <Label text="Welcome! this is the server for Remote Keyboard &amp; Mouse Android application, you can download it from Play store. Scan the QR Code from Android application to get connected."
-                               textAlignment="CENTER" wrapText="true"/>
+                        <Label contentDisplay="TOP" graphicTextGap="0.0" styleClass="label-heading" text="Remote Keyboard &amp; Mouse" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true" />
+                        <Separator prefWidth="200.0" />
+                        <Label text="Welcome! this is the server for Remote Keyboard &amp; Mouse Android application, you can download it from Play store. Scan the QR Code from Android application to get connected." textAlignment="CENTER" wrapText="true" />
                     </children>
                 </VBox>
             </children>
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
         </VBox>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
         <Separator opacity="0.66" orientation="VERTICAL" HBox.hgrow="NEVER">
             <HBox.margin>
-                <Insets right="5.0"/>
+                <Insets right="5.0" />
             </HBox.margin>
         </Separator>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
         <VBox alignment="BOTTOM_RIGHT" prefWidth="300.0" spacing="5.0" HBox.hgrow="ALWAYS">
             <children>
                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
                     <children>
                         <Label alignment="CENTER" styleClass="label-medium" text="Scan to Connect">
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ImageView id="imgQrcode" fx:id="imgQrcode" fitHeight="150.0" fitWidth="200.0"
-                                   pickOnBounds="true" preserveRatio="true" styleClass="barcode" VBox.vgrow="NEVER">
+                        <ImageView id="imgQrcode" fx:id="imgQrcode" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="barcode" VBox.vgrow="NEVER">
                             <image>
-                                <Image url="@qrcode.png"/>
+                                <Image url="@qrcode.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </ImageView>
-                        <Label id="txtIp" fx:id="txtIp" styleClass="label-medium" text="IP 192.168.2.2"/>
-                        <Label id="txtPort" fx:id="txtPort" layoutX="52.0" layoutY="215.0" styleClass="label-medium"
-                               text="Port: 2345"/>
-                        <Label fx:id="txtStatus" styleClass="note" text="Status: "/>
+                        <Label id="txtIp" fx:id="txtIp" styleClass="label-medium" text="IP 192.168.2.2" />
+                        <Label id="txtPort" fx:id="txtPort" layoutX="52.0" layoutY="215.0" styleClass="label-medium" text="Port: 2345" />
+                        <Label fx:id="txtStatus" styleClass="note" text="Status: " />
                     </children>
                     <VBox.margin>
-                        <Insets bottom="10.0"/>
+                        <Insets bottom="10.0" />
                     </VBox.margin>
                 </VBox>
-                <Label alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" styleClass="note"
-                       text="Note : Please make sure that the two devices are on the same network" textAlignment="RIGHT"
-                       wrapText="true" VBox.vgrow="ALWAYS"/>
+                <Label alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" styleClass="note" text="Note : Please make sure that the two devices are on the same network" textAlignment="RIGHT" wrapText="true" VBox.vgrow="ALWAYS" />
             </children>
         </VBox>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
     </children>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
 </HBox>
