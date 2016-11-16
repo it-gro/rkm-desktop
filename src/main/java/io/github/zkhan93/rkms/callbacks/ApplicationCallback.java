@@ -4,9 +4,17 @@ package io.github.zkhan93.rkms.callbacks;
  * Created by zeeshan on 11/14/2016.
  */
 public interface ApplicationCallback {
-    void showSettingScene() throws Exception;
+    void showSettingScene();
 
-    void showInfoScene() throws Exception;
+    void showAboutScene();
 
-    void showMainScene() throws Exception;
+    void showMainScene();
+
+    void setPort(int port);
+
+    void setName(String name);
+
+    void reset();
+
+    void stopServer();
 }

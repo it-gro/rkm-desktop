@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,28 +19,52 @@ public class SettingViewController implements Initializable, EventHandler<Action
     @FXML
     Button btnBack;
 
+    @FXML
+    Button btnSave;
+
+    @FXML
+    Button btnReset;
+
+    @FXML
+    TextField txtInputPort;
+
+    @FXML
+    TextField txtInputName;
+
     private ApplicationCallback applicationCallback;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnBack.setOnAction(this);
+        btnSave.setOnAction(this);
+        btnReset.setOnAction(this);
     }
 
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == btnBack) {
             //back to main scene
-            try {
-                applicationCallback.showMainScene();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            applicationCallback.showMainScene();
+        } else if (event.getSource() == btnSave) {
+            //TODO: validate input values if valid then save
+            if (validateInput()) {
+                applicationCallback.setPort(Integer.parseInt(txtInputPort.getText()));
+                applicationCallback.setName(txtInputName.getText());
             }
+        } else if (event.getSource() == btnReset) {
+            txtInputName.clear();
+            txtInputPort.clear();
         } else {
-            //not implemented
+            System.out.println("action not implemented");
         }
+    }
+
+    private boolean validateInput() {
+        return true;
     }
 
     public void setApplicationCallback(ApplicationCallback applicationCallback) {
         this.applicationCallback = applicationCallback;
     }
+
 }

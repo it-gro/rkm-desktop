@@ -12,86 +12,77 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox minHeight="350.0" minWidth="615.0" prefHeight="350.0" prefWidth="615.0" styleClass="body" stylesheets="@main.css"
-      xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.github.zkhan93.rkms.controller.SettingViewController">
+<HBox minHeight="350.0" minWidth="615.0" prefHeight="350.0" prefWidth="615.0" styleClass="body" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.zkhan93.rkms.controller.SettingViewController">
     <children>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
         <VBox fillWidth="false" prefWidth="300.0" spacing="5.0" HBox.hgrow="ALWAYS">
             <children>
-                <HBox spacing="5.0" styleClass="body">
-                    <children>
-                        <Button fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" text="Setting">
-                            <graphic>
-                                <ImageView>
-                                    <image>
-                                        <Image url="@ic_arrow_back_white_18dp_1x.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                    </children>
-                </HBox>
+                  <Button fx:id="btnBack" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" text="Setting">
+                      <graphic>
+                          <ImageView>
+                              <image>
+                                  <Image url="@ic_arrow_back_white_18dp_1x.png" />
+                              </image>
+                          </ImageView>
+                      </graphic>
+                  </Button>
                 <VBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
                     <children>
                         <ImageView fitHeight="112.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@launcher_trans.png"/>
+                                <Image url="@launcher_trans.png" />
                             </image>
                         </ImageView>
-                        <Label contentDisplay="TOP" graphicTextGap="0.0" styleClass="label-heading"
-                               text="Remote Keyboard &amp; Mouse" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS"
-                               wrapText="true"/>
-                        <Separator prefWidth="200.0"/>
-                        <Label text="Welcome! this is the server for Remote Keyboard &amp; Mouse Android application, you can download it from Play store. Scan the QR Code from Android application to get connected."
-                               textAlignment="CENTER" wrapText="true"/>
+                        <Label contentDisplay="TOP" graphicTextGap="0.0" styleClass="label-heading" text="Remote Keyboard &amp; Mouse" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true" />
+                        <Separator prefWidth="200.0" />
+                        <Label text="Welcome! this is the server for Remote Keyboard &amp; Mouse Android application, you can download it from Play store. Scan the QR Code from Android application to get connected." textAlignment="CENTER" wrapText="true" />
                     </children>
                 </VBox>
             </children>
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
         </VBox>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
         <Separator opacity="0.66" orientation="VERTICAL" HBox.hgrow="NEVER">
             <HBox.margin>
-                <Insets right="5.0"/>
+                <Insets right="5.0" />
             </HBox.margin>
         </Separator>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
         <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="5.0" HBox.hgrow="ALWAYS">
             <children>
                 <Label alignment="CENTER" styleClass="label-medium" text="Setting">
                     <VBox.margin>
-                        <Insets/>
+                        <Insets />
                     </VBox.margin>
                 </Label>
                 <VBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
                     <children>
-                        <Label id="txtIp" fx:id="txtIp" text="Display Name"/>
+                        <Label id="txtIp" text="Display Name" />
                         <TextField fx:id="txtInputName" promptText="My PC">
                             <opaqueInsets>
-                                <Insets/>
+                                <Insets />
                             </opaqueInsets>
                             <VBox.margin>
-                                <Insets bottom="5.0"/>
+                                <Insets bottom="5.0" />
                             </VBox.margin>
                         </TextField>
-                        <Label id="txtPort" fx:id="txtPort" text="Port"/>
-                        <TextField fx:id="txtInputPort" promptText="eg 2345"/>
+                        <Label id="txtPort"  text="Port" />
+                        <TextField fx:id="txtInputPort" promptText="eg 2345" />
                     </children>
                 </VBox>
                 <ButtonBar prefHeight="40.0" prefWidth="200.0">
                     <buttons>
-                        <Button fx:id="btnSave" mnemonicParsing="false" text="Save"/>
-                        <Button fx:id="btnReset" mnemonicParsing="false" text="Reset"/>
+                        <Button fx:id="btnSave" mnemonicParsing="false" text="Save" />
+                        <Button fx:id="btnReset" mnemonicParsing="false" text="Reset" />
                     </buttons>
                 </ButtonBar>
             </children>
         </VBox>
-        <Pane HBox.hgrow="ALWAYS"/>
+        <Pane HBox.hgrow="ALWAYS" />
     </children>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
 </HBox>

@@ -1,6 +1,15 @@
 * {
     -fx-default-background-color: #F44336;
-    -fx-default-button-color: white;
+    -fx-default-button-color: transparent;
+    -fx-default-button-hover-color: #E53935;
+    -fx-default-button-pressend-color: #C62828;
+    -fx-default-button-shadow-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 0);
+
+    -fx-default-text-color: #FAFAFA;
+    -fx-default-font-family: "Robot";
+
+    -fx-default-shadow-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
+
 }
 
 .body {
@@ -9,22 +18,52 @@
 
 .button {
     -fx-background-color: -fx-default-button-color;
-    -fx-text-fill: #F44336;
-    -fx-font-weight: 400;
+    -fx-text-fill: -fx-default-text-color;
+    -fx-font-weight: bold;
 }
 
-.label{
-    -fx-text-fill: white;
-    -fx-font-size: 150%;
-    -fx-font-weight: bold;
+.button:hover {
+    -fx-background-color: -fx-default-button-hover-color;
+    -fx-effect: -fx-default-button-shadow-effect;
+
 }
-.heading{
-    -fx-font-weight: bold;
-    -fx-font-size: 210%;
+
+.button:armed {
+    -fx-background-color: -fx-default-button-pressend-color;
+    -fx-effect: -fx-default-button-shadow-effect;
 }
-.info{
+
+.label {
+    -fx-text-fill: -fx-default-text-color;
+    -fx-font-weight: bold;
+    -fx-font-family: -fx-default-font-family;
+}
+
+.label-medium {
+    -fx-font-weight: bold;
     -fx-font-size: 120%;
 }
-.note{
+
+.label-heading {
+    -fx-font-size: 210%;
+    -fx-effect: -fx-default-shadow-effect;
+}
+
+.info {
+    -fx-font-size: 120%;
+}
+
+.note {
     -fx-font-size: 90%;
+}
+
+.barcode {
+    -fx-padding: 10px;
+    -fx-background-color: firebrick;
+    -fx-background-radius: 5;
+    -fx-effect: -fx-default-shadow-effect;
+}
+
+.text-field {
+
 }
