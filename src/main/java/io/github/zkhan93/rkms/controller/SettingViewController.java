@@ -1,5 +1,6 @@
 package io.github.zkhan93.rkms.controller;
 
+import io.github.zkhan93.rkms.Main;
 import io.github.zkhan93.rkms.callbacks.ApplicationCallback;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +11,7 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 /**
  * Created by zeeshan on 11/14/2016.
@@ -32,12 +34,14 @@ public class SettingViewController implements Initializable, EventHandler<Action
     TextField txtInputName;
 
     private ApplicationCallback applicationCallback;
+    private Preferences preferences;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnBack.setOnAction(this);
         btnSave.setOnAction(this);
         btnReset.setOnAction(this);
+        preferences = Preferences.userNodeForPackage(Main.class);
     }
 
     @Override
@@ -46,10 +50,9 @@ public class SettingViewController implements Initializable, EventHandler<Action
             //back to main scene
             applicationCallback.showMainScene();
         } else if (event.getSource() == btnSave) {
-            //TODO: validate input values if valid then save
             if (validateInput()) {
-                applicationCallback.setPort(Integer.parseInt(txtInputPort.getText()));
-                applicationCallback.setName(txtInputName.getText());
+                preferences.put("name",txtInputName.getText());
+                preferences.putInt("port",Integer.parseInt(txtInputPort.getText()));
             }
         } else if (event.getSource() == btnReset) {
             txtInputName.clear();
@@ -60,6 +63,7 @@ public class SettingViewController implements Initializable, EventHandler<Action
     }
 
     private boolean validateInput() {
+        //TODO: validate input values if valid then save in preferences
         return true;
     }
 

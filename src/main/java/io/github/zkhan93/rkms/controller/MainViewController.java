@@ -1,6 +1,8 @@
 package io.github.zkhan93.rkms.controller;
 
+import com.google.gson.Gson;
 import io.github.zkhan93.rkms.callbacks.ApplicationCallback;
+import io.github.zkhan93.rkms.models.Host;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -66,8 +68,9 @@ public class MainViewController implements Initializable, EventHandler<ActionEve
         txtStatus.setText(status);
     }
 
-    public void setQrcode(String ip, int port) {
-        imgQrcode.setImage(new Image(QRCode.from(ip + ":" + port).withSize(200, 200).to(ImageType.JPG).file().toURI().toString()));
+    public void setQrcode(Host host) {
+        System.out.println(new Gson().toJson(host));
+        imgQrcode.setImage(new Image(QRCode.from(new Gson().toJson(host)).withSize(200, 200).to(ImageType.JPG).file().toURI().toString()));
     }
 
 
@@ -78,7 +81,7 @@ public class MainViewController implements Initializable, EventHandler<ActionEve
             //switch to setting scene
             applicationCallback.showSettingScene();
         } else if (event.getSource() == btnAbout) {
-            //switch to info scene
+            //switch to host scene
             applicationCallback.showAboutScene();
         } else if (event.getSource() == btnReset) {
             applicationCallback.reset();

@@ -10,9 +10,9 @@ public interface ApplicationCallback {
 
     void showMainScene();
 
-    void setPort(int port);
-
-    void setName(String name);
+//    void setPort(int port);
+//
+//    void setName(String name);
 
     void reset();
 

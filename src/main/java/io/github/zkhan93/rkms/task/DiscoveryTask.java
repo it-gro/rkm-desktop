@@ -1,30 +1,53 @@
 package io.github.zkhan93.rkms.task;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketTimeoutException;
+import com.google.gson.Gson;
+import io.github.zkhan93.rkms.Main;
+import io.github.zkhan93.rkms.models.Host;
+import io.github.zkhan93.rkms.util.Constants;
 
-import static io.github.zkhan93.rkms.util.Constants.DISCOVERY_PORT;
+import java.net.*;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
+import java.util.prefs.Preferences;
 
 /**
  * Created by Zeeshan Khan on 11/6/2016.
  */
-public class DiscoveryTask implements Runnable {
-    DatagramSocket socket;
-    byte[] sendData = "DISCOVER_RKMS_RESPONSE".getBytes();
+public class DiscoveryTask implements Runnable, PreferenceChangeListener {
+    private DatagramSocket socket;
+    private byte[] sendData;// = "DISCOVER_RKMS_RESPONSE".getBytes();
+    private int activePort;
+
     public static DiscoveryTask getInstance() {
         return DiscoveryThreadHolder.INSTANCE;
     }
 
+    {
+        activePort = Preferences.userNodeForPackage(Main.class).getInt("port", Constants.PORT);
+        try {
+            InetAddress localHost = InetAddress.getLocalHost();
+            Host host = new Host(localHost.getHostName(), localHost.getHostAddress(), activePort);
+            sendData = new Gson().toJson(host, Host.class).getBytes();
+        } catch (UnknownHostException ex) {
+            System.out.println("unknown host" + ex.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void preferenceChange(PreferenceChangeEvent evt) {
+        if (evt.getKey().equals("port"))
+            activePort = Integer.parseInt(evt.getNewValue());
+    }
+
     private static class DiscoveryThreadHolder {
         private static final DiscoveryTask INSTANCE = new DiscoveryTask();
+
     }
 
     @Override
     public void run() {
         try {
-            socket = new DatagramSocket(2222,InetAddress.getByName("0.0.0.0"));
+            socket = new DatagramSocket(2222, InetAddress.getByName("0.0.0.0"));
 //            socket.setBroadcast(true);
             socket.setSoTimeout(5000);
             byte[] recvBuf = new byte[15000];

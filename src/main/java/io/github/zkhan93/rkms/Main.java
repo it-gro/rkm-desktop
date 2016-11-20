@@ -4,6 +4,7 @@ import io.github.zkhan93.rkms.callbacks.ApplicationCallback;
 import io.github.zkhan93.rkms.controller.AboutViewController;
 import io.github.zkhan93.rkms.controller.MainViewController;
 import io.github.zkhan93.rkms.controller.SettingViewController;
+import io.github.zkhan93.rkms.models.Host;
 import io.github.zkhan93.rkms.task.DiscoveryTask;
 import io.github.zkhan93.rkms.util.Constants;
 import javafx.application.Application;
@@ -15,10 +16,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
-public class Main extends Application implements ApplicationCallback {
+public class Main extends Application implements ApplicationCallback, PreferenceChangeListener {
 
     private MainViewController mainViewController;
     private SettingViewController settingViewController;
@@ -39,10 +43,10 @@ public class Main extends Application implements ApplicationCallback {
         loadFonts();
         System.out.println("loaded port from preference");
         driver = new Driver();
-        preference = Preferences.userNodeForPackage(MainViewController.class);
-        activePort = preference.getInt("port", Constants.PORT);
+        preference = Preferences.userNodeForPackage(Main.class);
         try {
             activePort = preference.getInt("port", Constants.PORT);
+            name = preference.get("name", InetAddress.getLocalHost().getHostName());
         } catch (Exception ex) {
             System.out.println("invalid port in preferences switched to default");
             activePort = Constants.PORT;
@@ -120,16 +124,16 @@ public class Main extends Application implements ApplicationCallback {
         }
     }
 
-    @Override
-    public void setPort(int port) {
-        activePort = port;
-        preference.putInt("port", activePort);
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
+//    @Override
+//    public void setPort(int port) {
+//        activePort = port;
+//        preference.putInt("port", activePort);
+//    }
+//
+//    @Override
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     @Override
     public void reset() {
@@ -166,8 +170,7 @@ public class Main extends Application implements ApplicationCallback {
             } catch (UnknownHostException ex) {
                 System.out.println("exception cannot get my IP" + ex.getLocalizedMessage());
             }
-            mainViewController.setQrcode(ip, activePort);
-//            imgQrcode.setImage(new Image(QRCode.from(ip + ":" + activePort).withSize(200, 200).to(ImageType.JPG).file().toURI().toString()));
+            mainViewController.setQrcode(new Host(name, ip, activePort));
         } else {
             if (error)
                 mainViewController.setStatus("Server stopped by error: " + error);
@@ -183,5 +186,20 @@ public class Main extends Application implements ApplicationCallback {
             driver.stop();
         if (discoveryThread != null)
             discoveryThread.interrupt();
+    }
+
+    @Override
+    public void preferenceChange(PreferenceChangeEvent evt) {
+        switch (evt.getKey()) {
+            case "port":
+                activePort = Integer.parseInt(evt.getNewValue());
+                reset();
+                break;
+            case "name":
+                name = evt.getNewValue();
+                break;
+            default:
+                System.out.println("some other preference changed");
+        }
     }
 }
