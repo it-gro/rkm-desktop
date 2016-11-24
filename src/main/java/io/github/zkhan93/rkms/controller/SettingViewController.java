@@ -51,8 +51,10 @@ public class SettingViewController implements Initializable, EventHandler<Action
             applicationCallback.showMainScene();
         } else if (event.getSource() == btnSave) {
             if (validateInput()) {
-                preferences.put("name",txtInputName.getText());
-                preferences.putInt("port",Integer.parseInt(txtInputPort.getText()));
+                if (txtInputName.getText() != null && !txtInputName.getText().isEmpty())
+                    preferences.put("name", txtInputName.getText());
+                if (txtInputPort.getText() != null && !txtInputPort.getText().isEmpty())
+                    preferences.putInt("port", Integer.parseInt(txtInputPort.getText()));
             }
         } else if (event.getSource() == btnReset) {
             txtInputName.clear();
@@ -64,6 +66,7 @@ public class SettingViewController implements Initializable, EventHandler<Action
 
     private boolean validateInput() {
         //TODO: validate input values if valid then save in preferences
+
         return true;
     }
 

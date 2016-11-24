@@ -44,6 +44,7 @@ public class Main extends Application implements ApplicationCallback, Preference
         System.out.println("loaded port from preference");
         driver = new Driver();
         preference = Preferences.userNodeForPackage(Main.class);
+        preference.addPreferenceChangeListener(this);
         try {
             activePort = preference.getInt("port", Constants.PORT);
             name = preference.get("name", InetAddress.getLocalHost().getHostName());
@@ -61,11 +62,15 @@ public class Main extends Application implements ApplicationCallback, Preference
         showMainScene();
         mainViewController.setPort(activePort);
         toggleState();
+        if (discoveryThread == null)
+            discoveryThread = new Thread(DiscoveryTask.getInstance());
+         discoveryThread.start();
     }
 
     @Override
     public void stop() throws Exception {
         stopServer();
+        discoveryThread.interrupt();
         super.stop();
     }
 
@@ -138,7 +143,7 @@ public class Main extends Application implements ApplicationCallback, Preference
     @Override
     public void reset() {
         driver.stop();
-        discoveryThread.interrupt();
+//        discoveryThread.interrupt();
         serverStarted = false;
         toggleState();
     }
@@ -151,8 +156,8 @@ public class Main extends Application implements ApplicationCallback, Preference
                 driver.go(activePort);
                 serverStarted = true;
                 //start the discovery thread at the start of application
-                discoveryThread = new Thread(DiscoveryTask.getInstance());
-                discoveryThread.start();
+//                discoveryThread = new Thread(DiscoveryTask.getInstance());
+//                discoveryThread.start();
             } catch (IOException ex) {
                 activePort++;
                 serverStarted = false;

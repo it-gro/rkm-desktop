@@ -1,6 +1,7 @@
 package io.github.zkhan93.rkms.controller;
 
 import com.google.gson.Gson;
+import io.github.zkhan93.rkms.Main;
 import io.github.zkhan93.rkms.callbacks.ApplicationCallback;
 import io.github.zkhan93.rkms.models.Host;
 import javafx.event.ActionEvent;
@@ -14,10 +15,13 @@ import javafx.scene.image.ImageView;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
 
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
+import java.util.prefs.Preferences;
 
 
 public class MainViewController implements Initializable, EventHandler<ActionEvent>, PreferenceChangeListener {
@@ -50,10 +54,15 @@ public class MainViewController implements Initializable, EventHandler<ActionEve
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         btnSetting.setOnAction(this);
         btnReset.setOnAction(this);
         btnAbout.setOnAction(this);
+        Preferences.userNodeForPackage(Main.class).addPreferenceChangeListener(this);
+        try {
+            txtIp.setText("IP " + InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException ex) {
+            System.out.println("cannot find localhost IP");
+        }
     }
 
     public void setApplicationCallback(ApplicationCallback applicationCallback) {
