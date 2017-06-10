@@ -1,4 +1,5 @@
 language: java
+group: edge
 matrix:
  include:
   - os: linux
