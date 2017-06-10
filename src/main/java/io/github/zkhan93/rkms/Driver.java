@@ -34,6 +34,7 @@ public class Driver implements ServerCallbacks {
 
     public void startListener() {
         getCommands = new GetCommands();
+        getCommands.setPriority(Thread.MAX_PRIORITY);
         getCommands.start();
     }
 

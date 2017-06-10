@@ -1,54 +1,36 @@
-group 'io.github.zkhan93'
-version '1.0'
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: "8.8.0"
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 
+    }
+}
 apply plugin: 'java'
-apply from: "http://dl.bintray.com/content/shemnon/javafx-gradle/8.1.1/javafx.plugin"
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    maven { url "http://jitpack.io" }
+	maven { url "http://jitpack.io" }
 }
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+dependencies{
+    // this dependency is only required when using UserJvmOptionsService
+    // when using Oracle JDK
+    // compile files("${System.properties['java.home']}/../lib/packager.jar")
+    // when using OpenJFX (Ubuntu), please adjust accordingly
+    // compile files("/usr/share/java/openjfx/lib/packager.jar")
+	testCompile group: 'junit', name: 'junit', version: '4.11'
     compile 'com.github.kenglxn.QRGen:javase:2.2.0'
     compile 'com.google.code.gson:gson:2.8.0'
 }
 
-// Configures plugin
-javafx {
-    // Points to JDK and its JavaFX libraries, also declares target runtime JDK
-    javaRuntime = 'C:/Program Files/Java/jdk1.8.0_92'//'/Library/Java/JavaVirtualMachines/jdk1.7.0_40.jdk'
+apply plugin: 'javafx-gradle-plugin'
 
-    // Application name and ID presented by target OS
-    appID 'RKMServer'
-    appName 'Remote Keyboard Mouse Server'
 
-    // Main class of application
-    mainClass 'io.github.zkhan93.rkms.Main'
-
-    // JVM arguments, system properties, application command line arguments
-    jvmArgs = ['-XX:+AggressiveOpts', '-XX:CompileThreshold=1']
-    systemProperties = ['prism.disableRegionCaching': 'true']
-    arguments = ['-l', '--fast']
-    // app icons
-    icons {
-        shortcut = ['shortcut-512.png']
-        volume = 'javafx-icon.png'
-        setup = 'setup-512.png'
-    }
-    // Keystore credentials for signing JAR
-    // Generate key: keytool -genkey -alias release -keyalg RSA -keystore keystore.jks -keysize 2048
-    releaseKey {
-        alias = 'rkmserver'
-        keyPass = getProjectProperty('keyStorePassword')
-        keyStore = file("D:/projects/RKAM/server/KeyStore.jks")
-        storePass = getProjectProperty('storePassword')
-    }
-
-    signingMode 'release'
-}
-
-String getProjectProperty(String propertyName) {
-    project.hasProperty(propertyName) ? project.property(propertyName) : null
+jfx {
+    mainClass = 'io.github.zkhan93.rkms.Main'
+    vendor = 'Zeeshan Khan'
 }
