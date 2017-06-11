@@ -5,9 +5,11 @@ matrix:
   - os: linux
     jdk: oraclejdk8
     env: DEPLOY_FILE=build/jfx/native/rkms-1.0.deb
+    script: gradle jfxNative
   - os: osx
     osx_image: xcode8
     env: DEPLOY_FILE=build/jfx/native/rkms-1.0
+    script: gradle jfxNative
     before_install:
     - brew install gradle
 deploy:
