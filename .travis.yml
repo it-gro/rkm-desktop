@@ -7,7 +7,7 @@ jdk:
 group: edge
 script:
   - gradle --version
-  - apt-get update gradle
+  - sudo apt-get install gradle-3.5
   - gradle jfxJar --stacktrace
 after_success:
   - gradle copyResources
