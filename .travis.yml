@@ -1,12 +1,14 @@
 
 env:
-- version=1.0
+  - version=1.0
 language: java
+jdk:
+  - oraclejdk8
 group: edge
 script:
-- gradle jfxJar
-- gradle copyResources
-- gradle izpackCreateInstaller
+  - gradle jfxJar
+  - gradle copyResources
+  - gradle izpackCreateInstaller
 deploy:
   skip_cleanup: true
   provider: releases
