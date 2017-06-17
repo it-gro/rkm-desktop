@@ -6,6 +6,8 @@ jdk:
   - oraclejdk8
 group: edge
 script:
+  - gradle --version
+  - apt-get update gradle
   - gradle jfxJar --stacktrace
 after_success:
   - gradle copyResources
