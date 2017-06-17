@@ -1,21 +1,29 @@
+
+def version = 1.0
+def title = 'Remote keyboard and Mouse'
+
 buildscript {
     dependencies {
         classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: "8.8.2"
+        classpath 'com.bmuschko:gradle-izpack-plugin:2.1'
     }
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 
     }
 }
 apply plugin: 'java'
-
+apply plugin: 'com.bmuschko.izpack'
+ 
 repositories {
     mavenLocal()
     mavenCentral()
 	maven { url "http://jitpack.io" }
 }
+
 dependencies{
     // this dependency is only required when using UserJvmOptionsService
     // when using Oracle JDK
@@ -25,12 +33,41 @@ dependencies{
 	testCompile group: 'junit', name: 'junit', version: '4.11'
     compile 'com.github.kenglxn.QRGen:javase:2.2.0'
     compile 'com.google.code.gson:gson:2.8.0'
+    izpack 'org.codehaus.izpack:izpack-standalone-compiler:4.3.4'
 }
 
 apply plugin: 'javafx-gradle-plugin'
 
-
 jfx {
     mainClass = 'io.github.zkhan93.rkms.Main'
     vendor = 'Zeeshan Khan'
+    verbose = true
+    jfxAppOutputDir = "build/jfx/app"
+    jfxMainAppJarName = "rkm.jar"
+    deployDir = "src/main/deploy"
+    useEnvironmentRelativeExecutables = true
+    libFolderName = "lib"
+}
+
+task copyResources(type: Copy) {
+    from('.'){
+        include 'shortcutSpec.xml'
+        include 'README.md'
+        include 'Licence.md'
+    }
+    from('src/main/resources/'){
+        include 'icon.png'
+        include 'splash.png'    
+    }
+    into 'build/jfx/app'
+}
+
+izpack {
+    baseDir = file("build/jfx/app")
+    installFile = file('installer.xml')
+    outputFile = file("build/izpack/rkms-${version}-installer.jar")
+    compression = 'deflate'
+    compressionLevel = 9
+    appProperties = ['app.group': 'rkm', 'app.name': 'rkm', 'app.title': title,
+                     'app.version': version, 'app.subpath': "rmk-$version"]
 }

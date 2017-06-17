@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<shortcuts>
+
+    <skipIfNotSupported/>
+
+    <programGroup defaultName="Remote Keyboard and Mouse" location="applications"/>
+
+      <shortcut
+        name="Remote Keyboard and Mouse"
+        programGroup="yes"
+        desktop="yes"
+        applications="no"
+        startMenu="yes"
+        startup="no"
+        target="java -jar $INSTALL_PATH\rkm.jar"
+        commandLine=""
+        description="Remote Keyboard and Mouse"
+        iconFile="$INSTALL_PATH\icon.ico"
+        iconIndex="0"
+        initialState="noShow">
+
+         <createForPack name="Base"/>
+
+       </shortcut>
+ 
+
+    <shortcut
+           name="Remote Keyboard and Mouse Uninstaller"
+           programGroup="yes"
+           desktop="no"
+           applications="no"
+           startMenu="no"
+           startup="no"
+           target="java -jar $INSTALL_PATH\Uninstaller\uninstaller.jar"
+           commandLine=""
+           iconFile="%SystemRoot%\system32\SHELL32.dll"
+           iconIndex="31"
+           description="Uninstall Remote Keyboard and Mouse">
+
+        <createForPack name="Base"/>
+    </shortcut>
+
+</shortcuts>

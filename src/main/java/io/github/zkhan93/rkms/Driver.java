@@ -56,7 +56,7 @@ public class Driver implements ServerCallbacks {
                         if (str.startsWith("0")) {
                             ch = Integer
                                     .parseInt(str.substring(2, str.length()));
-                            //	System.out.println((char) ch);
+                            	System.out.println((char) ch);
                             controller.typeKey(ch);
                         } else {
                             // if starts with 1 special key

@@ -193,7 +193,7 @@ public class Controller {
 		if (ch == KeyEvent.VK_ENTER || ch == KeyEvent.VK_BACK_SPACE)
 			pressNormalKey(ch);
 		else
-			pressUni(keycode);
+			pressNormalKey(ch);//pressUni(ch);
 		
 	}
 
