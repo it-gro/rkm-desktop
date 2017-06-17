@@ -6,7 +6,8 @@ jdk:
   - oraclejdk8
 group: edge
 script:
-  - gradle jfxJar
+  - gradle jfxJar --debug
+after_success:
   - gradle copyResources
   - gradle izpackCreateInstaller
 deploy:
