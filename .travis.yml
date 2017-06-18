@@ -7,8 +7,9 @@ jdk:
 group: edge
 before_script:
   - gradle --version
-  - sudo apt-get update -qq
-  - sudo apt-get install gradle -y
+  - wget https://services.gradle.org/distributions/gradle-3.5-bin.zip
+  - unzip -d . gradle-4.0-bin.zip
+  - export PATH=$PATH:./gradle-4.0/bin
   - gradle --version
 script:
   - gradle jfxJar --stacktrace
