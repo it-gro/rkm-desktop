@@ -78,7 +78,7 @@
             <description>The base files</description>
             <file src="README.md" targetdir="$INSTALL_PATH"/>
             <file src="README.md" targetdir="$INSTALL_PATH"/>
-            <file src="exe.ico" targetdir="$INSTALL_PATH"/>
+            <file src="icon.png" targetdir="$INSTALL_PATH"/>
             <file src="rkm.jar" targetdir="$INSTALL_PATH"/>
             <fileset dir="lib" targetdir="$INSTALL_PATH/lib">
                 <include name="**"/>

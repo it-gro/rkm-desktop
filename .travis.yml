@@ -12,8 +12,7 @@ before_script:
   - export PATH=$PATH:./gradle-3.5/bin
   - ./gradle-3.5/bin/gradle --version
 script:
-  - ./gradle-3.5/bin/gradle jfxJar --stacktrace
-after_success:
+  - ./gradle-3.5/bin/gradle jfxJar
   - ./gradle-3.5/bin/gradle copyResources
   - ./gradle-3.5/bin/gradle izpackCreateInstaller
 deploy:
