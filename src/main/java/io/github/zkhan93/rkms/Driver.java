@@ -49,7 +49,7 @@ public class Driver implements ServerCallbacks {
                 String stra[];
                 while (!isInterrupted() && (str = br.readLine()) != null
                         && Server.connected) {
-//                    	System.out.println(str);
+                    	System.out.println(str);
                     if (str.startsWith("0")) {
                         // keyboard event
                         str = str.substring(2, str.length());

@@ -21,12 +21,20 @@ public class Controller {
 		}
 	}
 
-	public void pressNormalKey(int keycode) {
+	public void pressNormalKey(int asciiCode) {
 		try {
-			robo.keyPress(keycode);
+			if (asciiCode >= 65 && asciiCode <= 90)
+				robo.keyPress(KeyEvent.VK_SHIFT);
+			if(asciiCode >= 97)
+				asciiCode-=32;
+			
+			robo.keyPress(asciiCode);
+			robo.keyRelease(asciiCode);
+			
+			if (asciiCode >= 65 && asciiCode <= 90)
+				robo.keyRelease(KeyEvent.VK_SHIFT);
 
-			robo.keyRelease(keycode);
-			System.out.println("key " + keycode + " pressed");
+			System.out.println("key " + asciiCode + " pressed");
 		} catch (IllegalArgumentException e) {
 			System.out.println("no such key");
 		}
@@ -34,13 +42,11 @@ public class Controller {
 
 	public void pressUni(int keycode) {
 		robo.keyPress(KeyEvent.VK_ALT);
-
+		int numpad_kc;
 		for (int i = 3; i >= 0; --i) {
 			// extracts a single decade of the key-code and adds
 			// an offset to getCommands the required VK_NUMPAD key-code
-			int numpad_kc = keycode / (int) (Math.pow(10, i)) % 10
-					+ KeyEvent.VK_NUMPAD0;
-
+			numpad_kc = keycode / (int) (Math.pow(10, i)) % 10 + KeyEvent.VK_NUMPAD0;
 			robo.keyPress(numpad_kc);
 			robo.keyRelease(numpad_kc);
 		}
@@ -161,25 +167,25 @@ public class Controller {
 	 * @param vy
 	 */
 	public void mouseMove(int x, int y, float vx, float vy) {
-		try{
-		cx = MouseInfo.getPointerInfo().getLocation().x;
-		cy = MouseInfo.getPointerInfo().getLocation().y;
-		// System.out.println("move by " + vx + "," + vy);
-		absvx = Math.abs(vx);
-		absvy = Math.abs(vy);
-		absx = Math.abs(x);
-		absy = Math.abs(y);
-		denom = absvx > absvy ? Math.round(absvx) : Math.round(absvy);
-		n = absx > absy ? absx * factor : absy * factor;
-		n /= (denom == 0 ? factor / 2 : denom);
-		// System.out.println("steps= " + n);
-		float dx = ((float) x) / n;
-		float dy = ((float) y) / n;
-		for (int step = 1; step <= n; step++) {
-			robo.mouseMove((int) (cx + dx * step), (int) (cy + dy * step));
+		try {
+			cx = MouseInfo.getPointerInfo().getLocation().x;
+			cy = MouseInfo.getPointerInfo().getLocation().y;
+			// System.out.println("move by " + vx + "," + vy);
+			absvx = Math.abs(vx);
+			absvy = Math.abs(vy);
+			absx = Math.abs(x);
+			absy = Math.abs(y);
+			denom = absvx > absvy ? Math.round(absvx) : Math.round(absvy);
+			n = absx > absy ? absx * factor : absy * factor;
+			n /= (denom == 0 ? factor / 2 : denom);
+			// System.out.println("steps= " + n);
+			float dx = ((float) x) / n;
+			float dy = ((float) y) / n;
+			for (int step = 1; step <= n; step++) {
+				robo.mouseMove((int) (cx + dx * step), (int) (cy + dy * step));
 
-		}
-		}catch(Exception e){
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -189,12 +195,12 @@ public class Controller {
 	 * @param ch
 	 */
 	public void typeKey(int ch) {
-		int keycode = ch;// KeyEvent.getExtendedKeyCodeForChar(ch);
+		// KeyEvent.getExtendedKeyCodeForChar(ch);
 		if (ch == KeyEvent.VK_ENTER || ch == KeyEvent.VK_BACK_SPACE)
 			pressNormalKey(ch);
 		else
-			pressNormalKey(ch);//pressUni(ch);
-		
+			pressNormalKey(ch);// pressUni(ch);
+
 	}
 
 	public static void shutdown() {
@@ -202,8 +208,7 @@ public class Controller {
 			String shutdownCommand;
 			String operatingSystem = System.getProperty("os.name");
 
-			if ("Linux".equals(operatingSystem)
-					|| "Mac OS X".equals(operatingSystem)) {
+			if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
 				shutdownCommand = "shutdown -h now";
 			} else if ("Windows".equals(operatingSystem)) {
 				shutdownCommand = "shutdown.exe -s -t 0";
