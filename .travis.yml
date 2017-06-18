@@ -10,12 +10,12 @@ before_script:
   - wget https://services.gradle.org/distributions/gradle-3.5-bin.zip
   - unzip -d . gradle-3.5-bin.zip
   - export PATH=$PATH:./gradle-3.5/bin
-  - gradle --version
+  - ./gradle-3.5/bin/gradle --version
 script:
-  - gradle jfxJar --stacktrace
+  - ./gradle-3.5/bin/gradle jfxJar --stacktrace
 after_success:
-  - gradle copyResources
-  - gradle izpackCreateInstaller
+  - ./gradle-3.5/bin/gradle copyResources
+  - ./gradle-3.5/bin/gradle izpackCreateInstaller
 deploy:
   skip_cleanup: true
   provider: releases
