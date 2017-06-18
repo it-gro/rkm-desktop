@@ -8,8 +8,8 @@ group: edge
 before_script:
   - gradle --version
   - wget https://services.gradle.org/distributions/gradle-3.5-bin.zip
-  - unzip -d . gradle-3.5.0-bin.zip
-  - export PATH=$PATH:./gradle-3.5.0/bin
+  - unzip -d . gradle-3.5-bin.zip
+  - export PATH=$PATH:./gradle-3.5/bin
   - gradle --version
 script:
   - gradle jfxJar --stacktrace
