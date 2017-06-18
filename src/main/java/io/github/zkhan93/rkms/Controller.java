@@ -196,6 +196,13 @@ public class Controller {
 	 */
 	public void typeKey(int ch) {
 		// KeyEvent.getExtendedKeyCodeForChar(ch);
+		int[] KeyboardKeys={
+				'`','1','2','3','4','5','6','7','8','9','0','-','=','\b',
+				'\t','q','w','e','r','t','y','u','i','o','p','[',']','\\',
+					'a','s','d','f','g','h','j','k','l',';','\'','\n',
+						'z','x','c','v','b','n','m',',','.','/',
+//					'','','','','','','','','','','','','','',
+		};
 		if (ch == KeyEvent.VK_ENTER || ch == KeyEvent.VK_BACK_SPACE)
 			pressNormalKey(ch);
 		else
