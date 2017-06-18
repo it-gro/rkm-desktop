@@ -5,13 +5,31 @@ import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.print.attribute.HashAttributeSet;
 
 public class Controller {
 	private Robot robo;
 	static int cx, cy, ex, ey, absx, absy;
 	static float m, inc, absvx, absvy;
 	static int n, denom;
-
+	private int[] directKeys = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Q', 'W', 'E', 'R', 'T',
+			'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', 'Z', 'X', 'C',
+			'V', 'B', 'N', 'M', ',', '.', '/' };
+	private int[] keysWithShift = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'q', 'w', 'e', 'r', 't',
+			'y', 'u', 'i', 'o', 'p', '{', '}', '|', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ':', 'z', 'x', 'c',
+			'v', 'b', 'n', 'm', '<', '>', '?' };
+	private Map<Integer, Integer> otherKeys = new HashMap<Integer, Integer>();
+	{
+		otherKeys.put(0x27, 0xDE);
+		otherKeys.put(0x22, 0x98);
+	}
+	private Map<Integer, Integer> otherWithShiftKeys = new HashMap<Integer, Integer>();
+	{
+	
+	}
 	public Controller() {
 		try {
 
@@ -23,17 +41,8 @@ public class Controller {
 
 	public void pressNormalKey(int asciiCode) {
 		try {
-			if (asciiCode >= 65 && asciiCode <= 90)
-				robo.keyPress(KeyEvent.VK_SHIFT);
-			if(asciiCode >= 97)
-				asciiCode-=32;
-			
 			robo.keyPress(asciiCode);
 			robo.keyRelease(asciiCode);
-			
-			if (asciiCode >= 65 && asciiCode <= 90)
-				robo.keyRelease(KeyEvent.VK_SHIFT);
-
 			System.out.println("key " + asciiCode + " pressed");
 		} catch (IllegalArgumentException e) {
 			System.out.println("no such key");
@@ -53,7 +62,7 @@ public class Controller {
 		robo.keyRelease(KeyEvent.VK_ALT);
 	}
 
-	public void pressShiftKey(int keycode) {
+	public void pressKeyWithShift(int keycode) {
 		try {
 			robo.keyPress(KeyEvent.VK_SHIFT);
 			robo.keyPress(keycode);
@@ -196,17 +205,28 @@ public class Controller {
 	 */
 	public void typeKey(int ch) {
 		// KeyEvent.getExtendedKeyCodeForChar(ch);
-		int[] KeyboardKeys={
-				'`','1','2','3','4','5','6','7','8','9','0','-','=','\b',
-				'\t','q','w','e','r','t','y','u','i','o','p','[',']','\\',
-					'a','s','d','f','g','h','j','k','l',';','\'','\n',
-						'z','x','c','v','b','n','m',',','.','/',
-//					'','','','','','','','','','','','','','',
-		};
-		if (ch == KeyEvent.VK_ENTER || ch == KeyEvent.VK_BACK_SPACE)
+		if (ch == KeyEvent.VK_ENTER || ch == KeyEvent.VK_BACK_SPACE) {
 			pressNormalKey(ch);
-		else
-			pressNormalKey(ch);// pressUni(ch);
+			return;
+		}
+		for (int x : directKeys)
+			if (ch == x) {
+				pressNormalKey(ch);
+				return;
+			}
+		for (int i = 0; i < keysWithShift.length; i++) {
+			if (ch == keysWithShift[i]) {
+				pressKeyWithShift(directKeys[i]);
+				return;
+			}
+		}
+		for (int key: otherKeys.keySet()){
+			if(key==ch){ pressNormalKey(otherKeys.get(key)); return;}
+		}
+		for (int key: otherWithShiftKeys.keySet()){
+			if(key==ch){ pressKeyWithShift(otherWithShiftKeys.get(key)); return;}
+		}
+		// handle unicode character press
 
 	}
 
