@@ -12,15 +12,13 @@ before_script:
   - export PATH=$PATH:./gradle-3.5/bin
   - ./gradle-3.5/bin/gradle --version
 script:
-  - ./gradle-3.5/bin/gradle jfxJar
-  - ./gradle-3.5/bin/gradle copyResources
-  - ./gradle-3.5/bin/gradle izpackCreateInstaller
+  - ./gradle-3.5/bin/gradle buildJar
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure: VaZABl/3YK8hw63itEdJEoSneI1ok8NMgrb2c/mi/dv2wfgUAemAE58EPWccik4PaDOcY64r/TKN9p+T7NnKr7/TzRsUi6p+rs0u8JgSJAiJHzeyKh1seDV3FaGZfPspIL9KWNiUKzqQKGf33Y1yFNB6s43yQ3+U2bz3/Gs+sgt1glo1gW+hR53JNIsad+0wlDLCOrMSW0Z2+ohLlmIiLtHvOmQI/wlHdMMlCCX+Pez12OTNNJmAN7hGOLCqUTBCysg0TbaeJL9wkXvmXg+0Xjj8/Za10sWzYBoAaqKYR43tHZBVhoUC/XLGLI/px9HHwhDm9UZbddvFiGLA8wkW4aNLOJChqVau2MiZgtAPvwlyCTJv85UEokgdQb3t4n+zSJTrDF6mqkmK+Xkyb0l65xc0Uw/yyI7UsdxddBTyDtI8kVhXFMHw3zo7fcrhSQGSQXW9CHSuoVz+gMxv+bzbQ7S/yK5Zl5CZc6HAV6Cb0sr8b4cNnEy7L9mVqPOmQ18GHmrhUOY/Ta+1pw3QA1+sfDhpFcJGgymLZOKUYevbcJfG9uE1cJs96HwshLfRs1Cj9MKmkhAOTjHin/tnjMR6M8grqQj3bt1EUqUXBcph622V2eJ05Mgd+OfQ46UY9WfjTTnfLVqWKAE/Vp6STJSp/p1pvEZeTpumQfRSJWuJ1+c=
-  file: "./build/izpack/rkms-$version-installer.jar"
+    secure: "$GITHUB_API_TOKEN"
+  file: "./build/lib/rkms-$version.jar"
   skip_cleanup: true
   on:
     repo: zVolt/rkm-desktop

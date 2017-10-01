@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-apply from: 'gradle/gradle/helpers.gradle'
+version  = "2.1"
 
 sourceSets {
     main {
@@ -16,16 +16,6 @@ sourceSets {
 project.ext{
     title = 'Remote keyboard and Mouse'
     mainClass = 'io.github.zkhan93.rkms.Main'
-
-    applicationVersion = "0.4.9-alpha"
-    applicationVersionDebian = "1";
-
-    applicationRelease = isApplicationRelease()
-    applicationDate = new Date()
-    applicationRevision = getRevision()
-
-    applicationVersionSnapshot = (!applicationRelease) ? "+SNAPSHOT.${asUTC(applicationDate, 'yyMMddHHmm')}.git${applicationRevision}" : ""
-    applicationVersionFull = "${applicationVersion}${applicationVersionSnapshot}"
 }
 
 repositories {
@@ -47,59 +37,11 @@ dependencies {
 task buildJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': title,
-                'Implementation-Version': applicationVersion,
+                'Implementation-Version': version,
                 'Main-Class': mainClass
 
     }
-    baseName = project.name + '-all'
+    baseName = "${project.name}-${version}"
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
-}
-
-// Windows Installer ///////////////////////////////////////////////////////////
-
-task exe(dependsOn: [buildJar]) << {
-    def innoSetupDir = new File("${buildDir}/innosetup")
-
-    delete innoSetupDir
-    innoSetupDir.mkdir();
-
-    copy {
-        from("${rootProject.projectDir}/gradle/innosetup/setup-left.bmp")
-        from("${rootProject.projectDir}/gradle/innosetup/setup-top.bmp")
-        from("${rootProject.projectDir}/gradle/innosetup/setup-info-before.rtf")
-        from("${rootProject.projectDir}/gradle/innosetup/setup-info-after.rtf")
-        from("${rootProject.projectDir}/gradle/innosetup/setup-icon.ico")
-        from("${rootProject.projectDir}/gradle/innosetup/modpath.iss")
-        from("${rootProject.projectDir}/gradle/innosetup/code.iss")
-        into(innoSetupDir)
-    }
-
-    copy {
-        from("${rootProject.projectDir}/gradle/innosetup/setup-cli.iss.skel")
-        rename("setup-cli.iss.skel", "setup-cli.iss")
-        expand([
-                applicationVersion: "${applicationVersion}",
-                applicationVersionFull: "${applicationVersionFull}",
-        ])
-        into(innoSetupDir)
-    }
-
-    exec {
-        workingDir rootProject.projectDir
-        commandLine ["C:\\Program Files (x86)\\Inno Setup 5\\iscc", "${innoSetupDir}/setup-cli.iss"]
-    }
-
-    if (!project.ext.has('exeDontCopyToUpload')) {
-        copy {
-            from files("${buildDir}/innosetup")
-            include "*.exe"
-            into file("build/upload")
-        }
-    }
-}
-task log {
-    exec {
-        commandLine ["C:\\Program Files (x86)\\Inno Setup 5\\iscc.exe",'setup-cli.iss']
-    }
 }
